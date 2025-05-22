@@ -44,7 +44,7 @@ export default function DirectMessagePage() {
       <div className="flex flex-col items-center justify-center h-full text-center">
         <h2 className="text-xl font-semibold mb-2">User not found</h2>
         <p className="text-muted-foreground">
-          The user you're looking for doesn't exist.
+          {`The user you're looking for doesn't exist.`}
         </p>
       </div>
     );

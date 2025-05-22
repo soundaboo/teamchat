@@ -82,11 +82,11 @@ export function CreateChannelForm({ onSuccess }: CreateChannelFormProps) {
       if (onSuccess) {
         onSuccess();
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         variant: "destructive",
         title: "Error creating channel",
-        description: error.message || "Something went wrong",
+        description: (error as Error).message || "Something went wrong",
       });
     } finally {
       setIsSubmitting(false);

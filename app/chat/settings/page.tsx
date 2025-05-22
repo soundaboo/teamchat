@@ -7,7 +7,7 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { UserAvatar } from "@/components/chat/user/user-avatar";
 import { supabase } from "@/lib/supabase";
 import { User } from "@/lib/types";
@@ -99,11 +99,11 @@ export default function SettingsPage() {
         title: "Profile updated",
         description: "Your profile has been updated successfully.",
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         variant: "destructive",
         title: "Error updating profile",
-        description: error.message || "Something went wrong",
+        description: (error as Error ).message || "Something went wrong",
       });
     } finally {
       setIsSaving(false);

@@ -65,7 +65,7 @@ export default function Home() {
                 <ShieldIcon className="h-12 w-12 text-primary mb-4" />
                 <h3 className="text-xl font-semibold mb-2">Secure Communication</h3>
                 <p className="text-muted-foreground">
-                  Your team's conversations stay private and secure.
+                  {`Your team's conversations stay private and secure.`}
                 </p>
               </div>
             </div>

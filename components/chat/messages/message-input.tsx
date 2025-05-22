@@ -65,11 +65,11 @@ export function MessageInput({ channelId, userId }: MessageInputProps) {
       }
       
       setMessage("");
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         variant: "destructive",
         title: "Error sending message",
-        description: error.message || "Something went wrong",
+        description: (error as Error).message || "Something went wrong",
       });
     } finally {
       setIsSending(false);

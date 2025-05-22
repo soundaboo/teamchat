@@ -39,7 +39,7 @@ export function Shell({
       }
       
       // Get user profile data
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from("profiles")
         .select("*")
         .eq("id", user.id)
@@ -55,7 +55,7 @@ export function Shell({
     checkUser();
     
     // Setup auth state change listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === "SIGNED_OUT") {
         router.push("/login");
       }

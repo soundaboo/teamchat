@@ -44,7 +44,7 @@ export default function ChannelPage() {
       <div className="flex flex-col items-center justify-center h-full text-center">
         <h2 className="text-xl font-semibold mb-2">Channel not found</h2>
         <p className="text-muted-foreground">
-          The channel you're looking for doesn't exist or you don't have access to it.
+          {`The channel you're looking for doesn't exist or you don't have access to it.`}
         </p>
       </div>
     );

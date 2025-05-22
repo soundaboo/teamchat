@@ -8,6 +8,7 @@ import { MessageItem } from "./message-item";
 import { Message, User } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 import { formatDistanceToNow } from "date-fns";
+import { RealtimeChannel } from "@supabase/supabase-js";
 
 interface MessageListProps {
   channelId?: string;
@@ -18,7 +19,7 @@ export function MessageList({ channelId, userId }: MessageListProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [hasNewMessages, setHasNewMessages] = useState(false);
-  const [users, setUsers] = useState<{ [key: string]: User }>({});
+  const [, setUsers] = useState<{ [key: string]: User }>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   
@@ -70,7 +71,7 @@ export function MessageList({ channelId, userId }: MessageListProps) {
           user: message.user || message.sender
         }));
         
-        setMessages(processedMessages as any);
+        setMessages(processedMessages as Message[]);
         
         // Extract user data from messages
         const userMap: { [key: string]: User } = {};
@@ -90,7 +91,7 @@ export function MessageList({ channelId, userId }: MessageListProps) {
     fetchMessages();
     
     // Set up real-time subscription
-    let subscription;
+    let subscription: unknown;
     
     if (channelId) {
       subscription = supabase
@@ -144,7 +145,7 @@ export function MessageList({ channelId, userId }: MessageListProps) {
     
     return () => {
       if (subscription) {
-        supabase.removeChannel(subscription);
+        supabase.removeChannel(subscription as unknown as RealtimeChannel);
       }
     };
   }, [channelId, userId]);
@@ -168,7 +169,7 @@ export function MessageList({ channelId, userId }: MessageListProps) {
 
   return (
     <div className="relative flex flex-col h-full">
-      <ScrollArea className="flex-1 p-4" ref={scrollAreaRef as any}>
+      <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
         {loading ? (
           <div className="flex justify-center items-center h-full">
             <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full" />

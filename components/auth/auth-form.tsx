@@ -4,14 +4,12 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { GithubIcon, Mail } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { GithubIcon } from "lucide-react";
 import { supabase } from "@/lib/supabase";
-import { useRouter } from "next/router";
 import { useToast } from "@/hooks/use-toast";
 
 const authFormSchema = z.object({
@@ -62,11 +60,11 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
           description: "Please check your email to verify your account.",
         });
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         variant: "destructive",
         title: "Authentication error",
-        description: error.message || "Something went wrong",
+        description: (error as Error).message || "Something went wrong",
       });
     } finally {
       setIsLoading(false);

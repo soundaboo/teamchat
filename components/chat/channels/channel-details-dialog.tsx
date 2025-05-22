@@ -37,7 +37,7 @@ export function ChannelDetailsDialog({ channel, membersCount }: ChannelDetailsDi
           ...item.profiles,
           role: item.role
         }));
-        setMembers(processedMembers as any);
+        setMembers(processedMembers as User[] & typeof processedMembers);
       }
       
       // Get creator
@@ -123,8 +123,8 @@ export function ChannelDetailsDialog({ channel, membersCount }: ChannelDetailsDi
                     <div>
                       <div className="font-medium">{member.full_name}</div>
                       <div className="text-xs text-muted-foreground">
-                        {(member as any).role === 'owner' ? 'Owner' : 
-                         (member as any).role === 'admin' ? 'Admin' : 'Member'}
+                        {(member as User & { role: string }).role === 'owner' ? 'Owner' : 
+                         (member as User & { role: string }).role === 'admin' ? 'Admin' : 'Member'}
                       </div>
                     </div>
                   </div>

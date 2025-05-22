@@ -3,11 +3,10 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MessageSquareIcon, PlusCircleIcon, Hash, Users, Settings, LogOut, User as UserIcon } from "lucide-react";
+import { MessageSquareIcon, PlusCircleIcon, Hash, Settings, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Channel, User } from "@/lib/types";
@@ -31,7 +30,12 @@ export function Sidebar({ isCollapsed, user }: SidebarProps) {
     
     // Fetch channels
     const fetchChannels = async () => {
-      const { data, error } = await supabase
+      // Helper function to create a subquery for channel memberships
+      function getChannelMembershipsQuery() {
+        return `select channel_id from channel_members where user_id = '${user?.id}'`;
+      }
+      
+      const { data } = await supabase
         .from('channels')
         .select('*')
         .or(`is_private=false, id=in(${getChannelMembershipsQuery()})`)
@@ -45,7 +49,7 @@ export function Sidebar({ isCollapsed, user }: SidebarProps) {
     // Fetch direct message users
     const fetchDirectUsers = async () => {
       // This is a simplified query - in a real app, you'd fetch users you've had DMs with
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('profiles')
         .select('*')
         .neq('id', user.id)
@@ -72,11 +76,6 @@ export function Sidebar({ isCollapsed, user }: SidebarProps) {
       supabase.removeChannel(channelSubscription);
     };
   }, [user]);
-  
-  // Helper function to create a subquery for channel memberships
-  function getChannelMembershipsQuery() {
-    return `select channel_id from channel_members where user_id = '${user?.id}'`;
-  }
   
   async function handleSignOut() {
     await supabase.auth.signOut();

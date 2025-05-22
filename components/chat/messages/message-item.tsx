@@ -21,7 +21,6 @@ export function MessageItem({ message, showUserInfo }: MessageItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(message.content);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [isCurrentUser, setIsCurrentUser] = useState(false);
   const { toast } = useToast();
   
   // Check if the current user is the message author
@@ -61,11 +60,11 @@ export function MessageItem({ message, showUserInfo }: MessageItemProps) {
       message.is_edited = true;
       
       setIsEditing(false);
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         variant: "destructive",
         title: "Error updating message",
-        description: error.message || "Something went wrong",
+        description: (error as Error).message || "Something went wrong",
       });
     }
   };
@@ -100,11 +99,11 @@ export function MessageItem({ message, showUserInfo }: MessageItemProps) {
       toast({
         title: "Message deleted",
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         variant: "destructive",
         title: "Error deleting message",
-        description: error.message || "Something went wrong",
+        description: (error as Error).message || "Something went wrong",
       });
     } finally {
       setShowDeleteDialog(false);
